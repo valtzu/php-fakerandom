@@ -1,0 +1,7 @@
+ARG_ENABLE('fakerandom', 'fakerandom support', 'no');
+
+if (PHP_FAKERANDOM != 'no') {
+	AC_DEFINE('HAVE_FAKERANDOM', 1, 'fakerandom support enabled');
+
+	EXTENSION('fakerandom', 'fakerandom.c', null, '/DZEND_ENABLE_STATIC_TSRMLS_CACHE=1');
+}
