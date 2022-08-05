@@ -2,5 +2,3 @@ version: '3.8'
 services:
   build:
     build: .
-    external_links:
-      - qa.php.net:127.0.0.1

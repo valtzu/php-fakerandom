@@ -1,0 +1,77 @@
+# Mostly copy-paste from https://github.com/kiddivouchers/php-timecop/blob/master/.github/workflows/build.yml
+name: Build fakerandom
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  release:
+    types: [created]
+jobs:
+  build:
+    name: PHP ${{ matrix.php-version }} (ZTS ${{ matrix.php-zts }})
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version:
+#          - '5.6'
+#          - '7.0'
+#          - '7.1'
+#          - '7.2'
+#          - '7.3'
+#          - '7.4'
+#          - '8.0'
+          - '8.1'
+        php-zts:
+          - nts
+    steps:
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          coverage: none
+        env:
+          phpts: ${{ matrix.php-zts }}
+      - name: Set PHP_API
+        run: |
+          echo "PHP_API=$(php-config --phpapi)" >> $GITHUB_ENV
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Build
+        run: |
+          phpize
+          php build/gen_stub.php
+          ./configure
+          make
+          make test REPORT_EXIT_STATUS=1 NO_INTERACTION=1 TESTS="--show-all"
+      - name: Save artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: fakerandom_${{ env.PHP_API }}.so
+          path: modules/fakerandom.so
+          if-no-files-found: error
+  package:
+    name: Package for download
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    needs: build
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v2
+      - name: Combine artifacts
+        run: |
+          mkdir -p output
+          for dir in fakerandom_*.so; do
+            # Move/rename from fakerandom.so to fakerandom_PHPAPI.so
+            mv "${dir}/fakerandom.so" "output/${dir}"
+          done
+          cd output
+          sha256sum *.so > SHA256SUM
+      - name: Save artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: fakerandom
+          path: output/*
+          if-no-files-found: error

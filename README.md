@@ -1,4 +1,5 @@
-# fakerandom extension for PHP
+fakerandom extension for PHP
+============================
 
 PHP extension that mocks `random_int` & `random_bytes` for testing purposes.
 
@@ -22,4 +23,10 @@ echo bin2hex(random_bytes(3)); // will be always 010203 (goes up until "ff" and 
 
 fake_random_disable(); 
 echo bin2hex(random_bytes(3)); // original functionality restored
+```
+
+## Build & test
+
+```
+docker-compose up --build
 ```
