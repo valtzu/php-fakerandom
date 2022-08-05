@@ -3,6 +3,14 @@ fakerandom extension for PHP
 
 PHP extension that mocks `random_int` & `random_bytes` for testing purposes.
 
+## Installation
+
+### Docker
+```dockerfile
+FROM php:8.1
+RUN curl -L https://github.com/valtzu/php-fakerandom/releases/download/v0.1.2/fakerandom_20210902.so > /usr/local/lib/php/extensions/no-debug-non-zts-20210902/fakerandom.so ;\
+    docker-php-ext-enable fakerandom
+```
 
 ## Usage
 
