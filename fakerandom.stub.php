@@ -1,6 +1,6 @@
 <?php
 
-/** @generate-class-entries */
+/** @generate-function-entries */
 
 function fake_random_int(int $min, int $max): int {}
 
