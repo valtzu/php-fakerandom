@@ -43,7 +43,7 @@ PHP_FUNCTION(fake_random_bytes)
 		Z_PARAM_LONG(length)
 	ZEND_PARSE_PARAMETERS_END();
 
-	retval = emalloc(length);
+	retval = emalloc(length + 1);
 
 	for (size_t i = 0; i < length; i++) {
 	  retval[i] = (char)((i + 1) % 256);
