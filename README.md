@@ -8,7 +8,7 @@ PHP extension that mocks `random_int` & `random_bytes` for testing purposes.
 ### Docker
 ```dockerfile
 FROM php:8.2
-RUN curl -L https://github.com/valtzu/php-fakerandom/releases/download/v0.1.2/fakerandom_20220829.so > /usr/local/lib/php/extensions/no-debug-non-zts-20220829/fakerandom.so ;\
+RUN curl -L https://github.com/valtzu/php-fakerandom/releases/download/v0.1.3/fakerandom_20220829.so > /usr/local/lib/php/extensions/no-debug-non-zts-20220829/fakerandom.so ;\
     docker-php-ext-enable fakerandom
 ```
 
